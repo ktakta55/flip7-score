@@ -1,67 +1,182 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#111827">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Flip 7 Score">
-  <link rel="manifest" href="./manifest.json">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-  <title>Flip 7 Score</title>
-  <style>
-    :root{
-      --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:#374151;--text:#f9fafb;
-      --muted:#9ca3af;--accent:#22c55e;--danger:#ef4444;--warn:#f59e0b;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    button,input,select{font:inherit}
-    button{touch-action:manipulation}
-    .app{max-width:980px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) 10px calc(14px + env(safe-area-inset-bottom))}
-    .top{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px}
-    .title{font-weight:800;font-size:18px}
-    .round{color:var(--muted);font-size:13px}
-    .modebar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
-    .modebtn{min-height:40px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-weight:700}
-    .modebtn.on{background:#14532d;border-color:var(--accent)}
-    .modebtn.kill.on{background:#7f1d1d;border-color:var(--danger)}
-    .players{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:8px}
-    .player{border:2px solid var(--line);background:var(--panel);border-radius:14px;padding:8px;min-width:0;text-align:left}
-    .player.active{border-color:var(--accent)}
-    .pname{width:100%;background:transparent;border:0;color:var(--text);font-weight:700;text-align:center;outline:none}
-    .scores{display:flex;justify-content:space-between;gap:6px;align-items:end;margin-top:4px}
-    .small{font-size:10px;color:var(--muted)}
-    .big{font-size:26px;font-weight:900;line-height:1}
-    .live{font-size:21px;font-weight:800;line-height:1}
-    .negative{color:#fca5a5}
-    .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px}
-    .activeHead{display:flex;justify-content:space-between;gap:10px;align-items:end;margin-bottom:8px}
-    .activeName{font-size:20px;font-weight:800}
-    .nums{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
-    .mods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
-    .btn{min-height:46px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-weight:800}
-    .btn.on{background:#14532d;border-color:var(--accent)}
-    .btn.danger.on{background:#7f1d1d;border-color:var(--danger)}
-    .btn.warn.on{background:#78350f;border-color:var(--warn)}
-    .attackbox{margin-top:8px;padding:9px;border-radius:10px;border:1px solid #7f1d1d;background:#2a1010}
-    .attackrow{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
-    .attackselect{width:100%;min-height:44px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:0 8px}
-    .actions{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:6px;margin-top:8px}
-    .primary{background:#166534;border-color:var(--accent)}
-    .formula{margin-top:8px;padding:8px;border-radius:10px;background:#0b1220;color:#cbd5e1;font-size:12px;min-height:34px}
-    .footer{display:flex;justify-content:space-between;gap:8px;margin-top:8px;color:var(--muted);font-size:11px}
-    .winner{margin-top:8px;padding:10px;border-radius:12px;background:#3f3f0d;color:#fef3c7;font-weight:800;text-align:center}
-    .hidden{display:none!important}
-    @media (orientation:landscape) and (max-height:600px){
-      .app{padding-top:6px}.player{padding:6px}.big{font-size:22px}.live{font-size:18px}
-      .btn{min-height:38px}.panel{padding:8px}.formula{display:none}
-    }
-    @media (max-width:520px){
-      .players{grid-template-columns:repeat(2,minmax(0,1fr))}.big{font-size:24px}
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Flip 7 Score">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>Flip 7 Score</title>
+<style>
+:root{
+  --bg:#f5f7fb;
+  --panel:#ffffff;
+  --panel2:#eef2f7;
+  --line:#cbd5e1;
+  --text:#111827;
+  --muted:#64748b;
+  --accent:#166534;
+  --accent-soft:#dcfce7;
+  --danger:#b91c1c;
+  --danger-soft:#fee2e2;
+  --warn:#92400e;
+  --warn-soft:#fef3c7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{overscroll-behavior:none}
+button,input,select{font:inherit;color:var(--text)}
+button{touch-action:manipulation}
+.app{
+  width:min(100%,1180px);
+  margin:0 auto;
+  padding:calc(12px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));
+}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.title{font-size:22px;font-weight:900;letter-spacing:.2px}
+.round{font-size:14px;color:var(--muted);margin-top:2px}
+.modebar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.modebtn,.btn{
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--text);
+  border-radius:12px;
+  min-height:48px;
+  font-weight:800;
+}
+.modebtn{padding:0 16px}
+.modebtn.on{background:var(--accent-soft);border-color:var(--accent);color:#14532d}
+.modebtn.kill.on{background:var(--danger-soft);border-color:var(--danger);color:#7f1d1d}
+
+.players{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:10px;
+}
+.player{
+  display:block;
+  width:100%;
+  border:2px solid var(--line);
+  background:var(--panel);
+  border-radius:18px;
+  padding:12px;
+  min-width:0;
+  text-align:left;
+  box-shadow:0 1px 3px rgba(15,23,42,.08);
+}
+.player.active{
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px rgba(22,101,52,.10);
+}
+.pname{
+  width:100%;
+  background:transparent;
+  border:0;
+  border-bottom:1px solid transparent;
+  color:var(--text)!important;
+  -webkit-text-fill-color:var(--text);
+  font-weight:800;
+  font-size:17px;
+  text-align:center;
+  outline:none;
+  padding:2px 4px 7px;
+}
+.pname:focus{border-bottom-color:var(--line)}
+.scoreGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.scoreBox{background:var(--panel2);border-radius:12px;padding:8px;text-align:center}
+.scoreLabel{font-size:12px;color:var(--muted);font-weight:700}
+.totalScore{
+  font-size:48px;
+  line-height:1;
+  font-weight:950;
+  color:#000!important;
+  -webkit-text-fill-color:#000;
+  font-variant-numeric:tabular-nums;
+  margin-top:4px;
+}
+.roundScore{
+  font-size:38px;
+  line-height:1;
+  font-weight:900;
+  color:#000!important;
+  -webkit-text-fill-color:#000;
+  font-variant-numeric:tabular-nums;
+  margin-top:7px;
+}
+.negative{color:var(--danger)!important;-webkit-text-fill-color:var(--danger)!important}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+  box-shadow:0 1px 3px rgba(15,23,42,.08);
+}
+.activeHead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:10px}
+.small{font-size:12px;color:var(--muted);font-weight:700}
+.activeName{font-size:24px;font-weight:900}
+.liveBig{
+  font-size:54px;
+  line-height:.95;
+  font-weight:950;
+  color:#000!important;
+  -webkit-text-fill-color:#000;
+  font-variant-numeric:tabular-nums;
+}
+.nums{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.btn{padding:4px 8px}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:#14532d}
+.btn.danger.on{background:var(--danger-soft);border-color:var(--danger);color:#7f1d1d}
+.btn.warn.on{background:var(--warn-soft);border-color:var(--warn);color:#78350f}
+.mods{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:8px}
+.attackbox{margin-top:10px;padding:10px;border-radius:12px;border:1px solid #fecaca;background:#fff7f7}
+.attackrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.attackselect{width:100%;min-height:48px;margin-top:8px;border-radius:10px;border:1px solid var(--line);background:#fff;padding:0 10px}
+.formula{margin-top:10px;padding:10px 12px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;color:#334155;font-size:13px;min-height:42px}
+.actions{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:8px;margin-top:10px}
+.primary{background:#166534;color:#fff;border-color:#166534}
+.winner{margin-top:10px;padding:12px;border-radius:12px;background:#fef3c7;color:#78350f;font-weight:900;text-align:center}
+.footer{display:flex;justify-content:space-between;gap:10px;margin-top:8px;color:var(--muted);font-size:11px}
+.hidden{display:none!important}
+
+/* Fold8の開いた4:3メイン画面を主対象 */
+@media (min-width:700px) and (max-aspect-ratio:1.45/1){
+  .app{padding-left:18px;padding-right:18px}
+  .players{gap:12px}
+  .player{padding:14px}
+  .totalScore{font-size:58px}
+  .roundScore{font-size:44px}
+  .liveBig{font-size:64px}
+  .btn{min-height:54px;font-size:17px}
+  .modebtn{min-height:50px}
+  .panel{padding:16px}
+}
+/* Foldを横向きにした場合 */
+@media (min-width:850px) and (min-aspect-ratio:1.2/1){
+  .players{gap:12px}
+  .totalScore{font-size:52px}
+  .roundScore{font-size:40px}
+  .btn{min-height:48px}
+}
+/* 閉じたスマホ画面でも破綻しない */
+@media (max-width:699px){
+  .app{padding-left:10px;padding-right:10px}
+  .players{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .player{padding:9px}
+  .pname{font-size:15px}
+  .totalScore{font-size:38px}
+  .roundScore{font-size:31px}
+  .liveBig{font-size:46px}
+  .nums{gap:6px}
+  .mods{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .btn{min-height:46px;font-size:14px}
+  .title{font-size:18px}
+}
+</style>
 </head>
 <body>
 <main class="app">
@@ -70,7 +185,7 @@
       <div class="title">Flip 7: With a Vengeance</div>
       <div class="round" id="roundLabel">Round 1 / 目標 200</div>
     </div>
-    <button class="btn" id="newGameBtn" style="padding:0 12px;min-height:40px">新規</button>
+    <button class="btn" id="newGameBtn" style="padding:0 16px">新規</button>
   </div>
 
   <div class="modebar">
@@ -84,7 +199,7 @@
   <section class="panel">
     <div class="activeHead">
       <div><div class="small">入力中</div><div class="activeName" id="activeName">PLAYER 1</div></div>
-      <div style="text-align:right"><div class="small">今回</div><div class="big" id="liveScore">0</div></div>
+      <div style="text-align:right"><div class="small">今回</div><div class="liveBig" id="liveScore">0</div></div>
     </div>
 
     <div class="nums" id="numButtons"></div>
@@ -105,12 +220,12 @@
     </div>
 
     <div class="attackbox hidden" id="attackBox">
-      <div style="font-weight:800">Flip 7 ボーナス（殺伐モード）</div>
+      <div style="font-weight:900">Flip 7 ボーナス（殺伐モード）</div>
       <div class="attackrow">
         <button class="btn" id="selfBonusBtn">自分 +15</button>
         <button class="btn danger" id="attackBonusBtn">相手 −15</button>
       </div>
-      <select id="attackTarget" class="attackselect hidden" aria-label="マイナス15点の対象"></select>
+      <select id="attackTarget" class="attackselect hidden"></select>
     </div>
 
     <div class="formula" id="formula">数字をタップしてください。</div>
@@ -128,8 +243,8 @@
 
 <script>
 (() => {
-  const STORAGE_KEY='flip7-v-score-v2';
-  const oldKey='flip7-v-score-v1';
+  const STORAGE_KEY='flip7-v-score-v3';
+  const previousKeys=['flip7-v-score-v2','flip7-v-score-v1'];
 
   function blankHand(){
     return {nums:{},half:false,mods:[],bust:false,flip7:false,theZero:false,lucky13:false,unlucky:false,bonusChoice:'self',attackTarget:null};
@@ -139,119 +254,117 @@
       players:Array.from({length:4},(_,i)=>({name:`PLAYER ${i+1}`,total:0,hand:blankHand()})),
       history:[]};
   }
-  function load(){
-    try {
-      const raw=localStorage.getItem(STORAGE_KEY);
-      if(raw) return normalize(JSON.parse(raw));
-      const old=localStorage.getItem(oldKey);
-      if(old) return normalize({...JSON.parse(old),mode:'normal'});
-    } catch(e){}
-    return freshState();
-  }
   function normalize(s){
     s.mode=s.mode==='kill'?'kill':'normal';
     s.players=(s.players||freshState().players).slice(0,4);
-    while(s.players.length<4) s.players.push({name:`PLAYER ${s.players.length+1}`,total:0,hand:blankHand()});
-    s.players.forEach((p,i)=>{p.name=p.name||`PLAYER ${i+1}`;p.total=Number(p.total)||0;p.hand={...blankHand(),...(p.hand||{})};p.hand.mods=Array.isArray(p.hand.mods)?p.hand.mods:[];});
+    while(s.players.length<4)s.players.push({name:`PLAYER ${s.players.length+1}`,total:0,hand:blankHand()});
+    s.players.forEach((p,i)=>{
+      p.name=p.name||`PLAYER ${i+1}`;
+      p.total=Number(p.total)||0;
+      p.hand={...blankHand(),...(p.hand||{})};
+      p.hand.mods=Array.isArray(p.hand.mods)?p.hand.mods:[];
+    });
     s.history=Array.isArray(s.history)?s.history:[];
     s.active=Math.max(0,Math.min(3,Number(s.active)||0));
     s.round=Math.max(1,Number(s.round)||1);
     s.target=Math.max(1,Number(s.target)||200);
     return s;
   }
+  function load(){
+    try{
+      let raw=localStorage.getItem(STORAGE_KEY);
+      if(raw)return normalize(JSON.parse(raw));
+      for(const k of previousKeys){
+        raw=localStorage.getItem(k);
+        if(raw)return normalize(JSON.parse(raw));
+      }
+    }catch(e){}
+    return freshState();
+  }
 
-  const state=load();
-  const $=s=>document.querySelector(s);
-
-  function save(){ localStorage.setItem(STORAGE_KEY,JSON.stringify(state)); $('#saveState').textContent='保存済み';}
+  const state=load(),$=s=>document.querySelector(s);
+  function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));$('#saveState').textContent='保存済み'}
   function numberCount(h){return Object.values(h.nums).reduce((a,b)=>a+(Number(b)||0),0)}
-  function hasFlip7(h){return h.flip7 || numberCount(h)>=7}
+  function hasFlip7(h){return h.flip7||numberCount(h)>=7}
 
   function ownRoundScore(h){
     const flip=hasFlip7(h);
-
-    if(h.theZero && !flip) return 0;
-
+    if(h.theZero&&!flip)return 0;
     let s;
     if(h.bust){
-      if(state.mode==='normal') return 0;
+      if(state.mode==='normal')return 0;
       s=0;
     }else{
       s=Object.entries(h.nums).reduce((a,[n,c])=>a+Number(n)*Number(c),0);
-      if(h.half) s=Math.floor(s/2);
+      if(h.half)s=Math.floor(s/2);
     }
-
-    for(const m of h.mods) s-=m;
-
-    if(state.mode==='normal') s=Math.max(0,s);
-
-    if(flip){
-      if(state.mode==='normal' || h.bonusChoice!=='attack') s+=15;
-    }
+    for(const m of h.mods)s-=m;
+    if(state.mode==='normal')s=Math.max(0,s);
+    if(flip&&(state.mode==='normal'||h.bonusChoice!=='attack'))s+=15;
     return s;
   }
-
-  function incomingPenalty(playerIndex){
-    if(state.mode!=='kill') return 0;
+  function incomingPenalty(i){
+    if(state.mode!=='kill')return 0;
     let p=0;
-    state.players.forEach((pl,i)=>{
+    state.players.forEach((pl,j)=>{
       const h=pl.hand;
-      if(i!==playerIndex && hasFlip7(h) && h.bonusChoice==='attack' && Number(h.attackTarget)===playerIndex) p-=15;
+      if(j!==i&&hasFlip7(h)&&h.bonusChoice==='attack'&&Number(h.attackTarget)===i)p-=15;
     });
     return p;
   }
-
   function shownRoundScore(i){return ownRoundScore(state.players[i].hand)+incomingPenalty(i)}
 
-  function breakdown(i){
-    const h=state.players[i].hand, flip=hasFlip7(h), incoming=incomingPenalty(i);
-    const parts=[];
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
-    if(h.theZero && !flip){
-      parts.push('The Zero → 0点');
-    } else if(h.bust){
-      if(state.mode==='normal') parts.push('BUST → 0点');
-      else {
+  function breakdown(i){
+    const h=state.players[i].hand,flip=hasFlip7(h),incoming=incomingPenalty(i),parts=[];
+    if(h.theZero&&!flip)parts.push('The Zero → 0点');
+    else if(h.bust){
+      if(state.mode==='normal')parts.push('BUST → 0点');
+      else{
         parts.push('BUST → 基礎0点');
         const minus=h.mods.reduce((a,b)=>a+b,0);
-        if(minus) parts.push(`修正 −${minus}`);
+        if(minus)parts.push(`修正 −${minus}`);
       }
-    } else {
+    }else{
       let s=Object.entries(h.nums).reduce((a,[n,c])=>a+Number(n)*Number(c),0);
       parts.push(`数字合計 ${s}`);
       if(h.half){s=Math.floor(s/2);parts.push(`÷2 → ${s}`)}
       const minus=h.mods.reduce((a,b)=>a+b,0);
       if(minus){s-=minus;if(state.mode==='normal')s=Math.max(0,s);parts.push(`−${minus} → ${s}`)}
     }
-
     if(flip){
-      if(state.mode==='kill' && h.bonusChoice==='attack'){
+      if(state.mode==='kill'&&h.bonusChoice==='attack'){
         const t=state.players[Number(h.attackTarget)];
         parts.push(t?`${t.name} に −15`:'相手に −15');
       }else parts.push('Flip 7 +15');
     }
-    if(incoming) parts.push(`他プレイヤーから ${incoming}`);
+    if(incoming)parts.push(`他プレイヤーから ${incoming}`);
     parts.push(`今回 ${shownRoundScore(i)}点`);
     return parts.join('　');
   }
 
-  function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-
   function renderPlayers(){
     const wrap=$('#players');wrap.innerHTML='';
     state.players.forEach((p,i)=>{
-      const rs=shownRoundScore(i);
-      const card=document.createElement('button');
+      const rs=shownRoundScore(i),card=document.createElement('button');
       card.type='button';card.className='player'+(i===state.active?' active':'');
-      card.innerHTML=`<input class="pname" data-name="${i}" value="${esc(p.name)}" aria-label="プレイヤー${i+1}名">
-      <div class="scores"><div><div class="small">累計</div><div class="big ${p.total<0?'negative':''}">${p.total}</div></div>
-      <div style="text-align:right"><div class="small">今回</div><div class="live ${rs<0?'negative':''}">${rs}</div></div></div>`;
+      card.innerHTML=`
+        <input class="pname" data-name="${i}" value="${esc(p.name)}">
+        <div class="scoreGrid">
+          <div class="scoreBox"><div class="scoreLabel">累計</div><div class="totalScore ${p.total<0?'negative':''}">${p.total}</div></div>
+          <div class="scoreBox"><div class="scoreLabel">今回</div><div class="roundScore ${rs<0?'negative':''}">${rs}</div></div>
+        </div>`;
       card.addEventListener('click',e=>{if(e.target.matches('input'))return;state.active=i;save();render()});
       wrap.appendChild(card);
     });
     wrap.querySelectorAll('.pname').forEach(inp=>{
       inp.addEventListener('click',e=>e.stopPropagation());
-      inp.addEventListener('change',e=>{const i=Number(e.target.dataset.name);state.players[i].name=e.target.value.trim()||`PLAYER ${i+1}`;save();render()});
+      inp.addEventListener('change',e=>{
+        const i=Number(e.target.dataset.name);
+        state.players[i].name=e.target.value.trim()||`PLAYER ${i+1}`;
+        save();render();
+      });
     });
   }
 
@@ -262,7 +375,7 @@
       b.type='button';b.className='btn'+(c?' on':'');b.textContent=(n===13&&c===2)?'13×2':String(n);
       b.addEventListener('click',()=>{
         const cur=h.nums[n]||0;
-        if(n===13&&h.lucky13) h.nums[n]=(cur+1)%3; else h.nums[n]=cur?0:1;
+        if(n===13&&h.lucky13)h.nums[n]=(cur+1)%3;else h.nums[n]=cur?0:1;
         if(n===0)h.theZero=!!h.nums[0];
         save();render();
       });
@@ -273,7 +386,8 @@
   function renderMods(){
     const h=state.players[state.active].hand;
     document.querySelectorAll('[data-mod]').forEach(b=>{
-      const v=b.dataset.mod,on=v==='half'?h.half:h.mods.includes(Number(v));b.classList.toggle('on',on);
+      const v=b.dataset.mod,on=v==='half'?h.half:h.mods.includes(Number(v));
+      b.classList.toggle('on',on);
     });
     $('#bustBtn').classList.toggle('on',h.bust);
     $('#flip7Btn').classList.toggle('on',hasFlip7(h));
@@ -283,18 +397,14 @@
   }
 
   function renderAttack(){
-    const h=state.players[state.active].hand;
-    const show=state.mode==='kill'&&hasFlip7(h);
+    const h=state.players[state.active].hand,show=state.mode==='kill'&&hasFlip7(h);
     $('#attackBox').classList.toggle('hidden',!show);
     if(!show)return;
     $('#selfBonusBtn').classList.toggle('on',h.bonusChoice!=='attack');
     $('#attackBonusBtn').classList.toggle('on',h.bonusChoice==='attack');
-
     const sel=$('#attackTarget');
     sel.innerHTML=state.players.map((p,i)=>i===state.active?'':`<option value="${i}">${esc(p.name)} −15</option>`).join('');
-    if(h.attackTarget===null || Number(h.attackTarget)===state.active){
-      h.attackTarget=(state.active+1)%4;
-    }
+    if(h.attackTarget===null||Number(h.attackTarget)===state.active)h.attackTarget=(state.active+1)%4;
     sel.value=String(h.attackTarget);
     sel.classList.toggle('hidden',h.bonusChoice!=='attack');
   }
@@ -324,7 +434,6 @@
     else{const n=Number(v),idx=h.mods.indexOf(n);idx>=0?h.mods.splice(idx,1):h.mods.push(n)}
     save();render();
   }));
-
   $('#normalModeBtn').addEventListener('click',()=>{state.mode='normal';save();render()});
   $('#killModeBtn').addEventListener('click',()=>{state.mode='kill';save();render()});
   $('#bustBtn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.bust=!h.bust;save();render()});
@@ -337,7 +446,6 @@
   $('#attackBonusBtn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.bonusChoice='attack';if(h.attackTarget===null||Number(h.attackTarget)===state.active)h.attackTarget=(state.active+1)%4;save();render()});
   $('#attackTarget').addEventListener('change',e=>{state.players[state.active].hand.attackTarget=Number(e.target.value);save();render()});
   $('#nextPlayerBtn').addEventListener('click',()=>{state.active=(state.active+1)%4;save();render()});
-
   $('#commitBtn').addEventListener('click',()=>{
     const scores=state.players.map((_,i)=>shownRoundScore(i));
     state.history.push({scores,mode:state.mode});
@@ -345,18 +453,19 @@
     state.players.forEach(p=>p.hand=blankHand());
     state.active=0;state.round+=1;save();render();
   });
-
   $('#undoRoundBtn').addEventListener('click',()=>{
     const last=state.history.pop();if(!last)return;
     last.scores.forEach((s,i)=>state.players[i].total-=s);
-    state.round=Math.max(1,state.round-1);state.players.forEach(p=>p.hand=blankHand());state.active=0;save();render();
+    state.round=Math.max(1,state.round-1);
+    state.players.forEach(p=>p.hand=blankHand());
+    state.active=0;save();render();
   });
-
   $('#newGameBtn').addEventListener('click',()=>{
     if(!confirm('現在の得点を消して新しいゲームを開始しますか？'))return;
-    state.round=1;state.active=0;state.history=[];state.players.forEach(p=>{p.total=0;p.hand=blankHand()});save();render();
+    state.round=1;state.active=0;state.history=[];
+    state.players.forEach(p=>{p.total=0;p.hand=blankHand()});
+    save();render();
   });
-
   if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
   render();
 })();

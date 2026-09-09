@@ -1,12 +1,12 @@
 {
   "name": "Flip 7 Score",
   "short_name": "Flip 7",
-  "description": "Flip 7: With a Vengeance 4人用スコアボード（通常・殺伐モード対応）",
+  "description": "Flip 7: With a Vengeance 4人用スコアボード（通常・殺伐モード）",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#111827",
+  "background_color": "#f5f7fb",
+  "theme_color": "#ffffff",
   "orientation": "any",
   "icons": [
     {
