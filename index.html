@@ -50,11 +50,12 @@ button{touch-action:manipulation}
   color:var(--text)!important;-webkit-text-fill-color:var(--text);font-weight:800;
   font-size:17px;text-align:center;outline:none;padding:2px 4px 7px
 }
-.scoreGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.scoreGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}
 .scoreBox{background:var(--panel2);border-radius:12px;padding:8px;text-align:center}
 .scoreLabel{font-size:12px;color:var(--muted);font-weight:700}
 .totalScore{font-size:48px;line-height:1;font-weight:950;color:#000!important;-webkit-text-fill-color:#000;font-variant-numeric:tabular-nums;margin-top:4px}
-.roundScore{font-size:38px;line-height:1;font-weight:900;color:#000!important;-webkit-text-fill-color:#000;font-variant-numeric:tabular-nums;margin-top:7px}
+.roundScore{font-size:34px;line-height:1;font-weight:900;color:#000!important;-webkit-text-fill-color:#000;font-variant-numeric:tabular-nums;margin-top:7px}
+.liveTotalScore{font-size:34px;line-height:1;font-weight:950;color:#000!important;-webkit-text-fill-color:#000;font-variant-numeric:tabular-nums;margin-top:7px}
 .negative{color:var(--danger)!important;-webkit-text-fill-color:var(--danger)!important}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 1px 3px rgba(15,23,42,.08)}
 .activeHead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:10px}
@@ -90,17 +91,17 @@ button{touch-action:manipulation}
   .app{padding-left:18px;padding-right:18px}
   .players{gap:12px}.player{padding:14px}
   .players.p4 .totalScore,.players.p3 .totalScore,.players.p2 .totalScore{font-size:58px}
-  .players.p4 .roundScore,.players.p3 .roundScore,.players.p2 .roundScore{font-size:44px}
+  .players.p4 .roundScore,.players.p3 .roundScore,.players.p2 .roundScore,.players.p4 .liveTotalScore,.players.p3 .liveTotalScore,.players.p2 .liveTotalScore{font-size:40px}
   .players.p5 .totalScore,.players.p6 .totalScore{font-size:52px}
   .players.p7 .totalScore,.players.p8 .totalScore{font-size:43px}
-  .players.p5 .roundScore,.players.p6 .roundScore{font-size:40px}
-  .players.p7 .roundScore,.players.p8 .roundScore{font-size:34px}
+  .players.p5 .roundScore,.players.p6 .roundScore,.players.p5 .liveTotalScore,.players.p6 .liveTotalScore{font-size:36px}
+  .players.p7 .roundScore,.players.p8 .roundScore,.players.p7 .liveTotalScore,.players.p8 .liveTotalScore{font-size:31px}
   .liveBig{font-size:64px}.btn{min-height:54px;font-size:17px}.panel{padding:16px}
 }
 @media (max-width:699px){
   .app{padding-left:10px;padding-right:10px}
   .players,.players.p2,.players.p3,.players.p4,.players.p5,.players.p6,.players.p7,.players.p8{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-  .player{padding:9px}.pname{font-size:15px}.totalScore{font-size:38px}.roundScore{font-size:31px}
+  .player{padding:9px}.pname{font-size:15px}.totalScore{font-size:34px}.roundScore{font-size:28px}.liveTotalScore{font-size:28px}
   .liveBig{font-size:46px}.nums{gap:6px}.mods{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
   .btn{min-height:46px;font-size:14px}.title{font-size:18px}
 }
@@ -169,7 +170,7 @@ button{touch-action:manipulation}
   </section>
 
   <div class="winner hidden" id="winner"></div>
-  <div class="footer"><span>自動保存 / オフライン対応</span><span id="saveState">保存済み</span></div>
+  <div class="footer"><span>合計 = 累計 + 今回（リアルタイム）</span><span id="saveState">保存済み</span></div>
 </main>
 
 <div class="dialogBack hidden" id="settingsDialog">
@@ -286,6 +287,7 @@ button{touch-action:manipulation}
       <div class="scoreGrid">
         <div class="scoreBox"><div class="scoreLabel">累計</div><div class="totalScore ${p.total<0?'negative':''}">${p.total}</div></div>
         <div class="scoreBox"><div class="scoreLabel">今回</div><div class="roundScore ${rs<0?'negative':''}">${rs}</div></div>
+        <div class="scoreBox"><div class="scoreLabel">合計</div><div class="liveTotalScore ${(p.total+rs)<0?'negative':''}">${p.total+rs}</div></div>
       </div>`;
       card.addEventListener('click',e=>{if(e.target.matches('input'))return;state.active=i;save();render()});
       wrap.appendChild(card);
