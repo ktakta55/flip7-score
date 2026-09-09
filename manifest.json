@@ -1,7 +1,7 @@
 {
   "name": "Flip 7 Score",
   "short_name": "Flip 7",
-  "description": "Flip 7: With a Vengeance 4人用スコアボード（通常・殺伐モード）",
+  "description": "Flip 7: With a Vengeance スコアボード（2〜8人、通常・殺伐モード）",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

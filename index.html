@@ -12,121 +12,55 @@
 <title>Flip 7 Score</title>
 <style>
 :root{
-  --bg:#f5f7fb;
-  --panel:#ffffff;
-  --panel2:#eef2f7;
-  --line:#cbd5e1;
-  --text:#111827;
-  --muted:#64748b;
-  --accent:#166534;
-  --accent-soft:#dcfce7;
-  --danger:#b91c1c;
-  --danger-soft:#fee2e2;
-  --warn:#92400e;
-  --warn-soft:#fef3c7;
+  --bg:#f5f7fb;--panel:#fff;--panel2:#eef2f7;--line:#cbd5e1;--text:#111827;
+  --muted:#64748b;--accent:#166534;--accent-soft:#dcfce7;--danger:#b91c1c;
+  --danger-soft:#fee2e2;--warn:#92400e;--warn-soft:#fef3c7;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body{overscroll-behavior:none}
 button,input,select{font:inherit;color:var(--text)}
 button{touch-action:manipulation}
-.app{
-  width:min(100%,1180px);
-  margin:0 auto;
-  padding:calc(12px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));
-}
+.app{width:min(100%,1180px);margin:0 auto;padding:calc(12px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
-.title{font-size:22px;font-weight:900;letter-spacing:.2px}
+.title{font-size:22px;font-weight:900}
 .round{font-size:14px;color:var(--muted);margin-top:2px}
-.modebar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.topActions{display:flex;gap:8px}
+.modebar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .modebtn,.btn{
-  border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--text);
-  border-radius:12px;
-  min-height:48px;
-  font-weight:800;
+  border:1px solid var(--line);background:var(--panel);color:var(--text);
+  border-radius:12px;min-height:48px;font-weight:800;
 }
 .modebtn{padding:0 16px}
 .modebtn.on{background:var(--accent-soft);border-color:var(--accent);color:#14532d}
 .modebtn.kill.on{background:var(--danger-soft);border-color:var(--danger);color:#7f1d1d}
-
-.players{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:10px;
-  margin-bottom:10px;
-}
+.players{display:grid;gap:10px;margin-bottom:10px}
+.players.p2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.players.p3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.players.p4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.players.p5,.players.p6{grid-template-columns:repeat(3,minmax(0,1fr))}
+.players.p7,.players.p8{grid-template-columns:repeat(4,minmax(0,1fr))}
 .player{
-  display:block;
-  width:100%;
-  border:2px solid var(--line);
-  background:var(--panel);
-  border-radius:18px;
-  padding:12px;
-  min-width:0;
-  text-align:left;
-  box-shadow:0 1px 3px rgba(15,23,42,.08);
+  display:block;width:100%;border:2px solid var(--line);background:var(--panel);
+  border-radius:18px;padding:12px;min-width:0;text-align:left;box-shadow:0 1px 3px rgba(15,23,42,.08)
 }
-.player.active{
-  border-color:var(--accent);
-  box-shadow:0 0 0 2px rgba(22,101,52,.10);
-}
+.player.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(22,101,52,.10)}
 .pname{
-  width:100%;
-  background:transparent;
-  border:0;
-  border-bottom:1px solid transparent;
-  color:var(--text)!important;
-  -webkit-text-fill-color:var(--text);
-  font-weight:800;
-  font-size:17px;
-  text-align:center;
-  outline:none;
-  padding:2px 4px 7px;
+  width:100%;background:transparent;border:0;border-bottom:1px solid transparent;
+  color:var(--text)!important;-webkit-text-fill-color:var(--text);font-weight:800;
+  font-size:17px;text-align:center;outline:none;padding:2px 4px 7px
 }
-.pname:focus{border-bottom-color:var(--line)}
 .scoreGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .scoreBox{background:var(--panel2);border-radius:12px;padding:8px;text-align:center}
 .scoreLabel{font-size:12px;color:var(--muted);font-weight:700}
-.totalScore{
-  font-size:48px;
-  line-height:1;
-  font-weight:950;
-  color:#000!important;
-  -webkit-text-fill-color:#000;
-  font-variant-numeric:tabular-nums;
-  margin-top:4px;
-}
-.roundScore{
-  font-size:38px;
-  line-height:1;
-  font-weight:900;
-  color:#000!important;
-  -webkit-text-fill-color:#000;
-  font-variant-numeric:tabular-nums;
-  margin-top:7px;
-}
+.totalScore{font-size:48px;line-height:1;font-weight:950;color:#000!important;-webkit-text-fill-color:#000;font-variant-numeric:tabular-nums;margin-top:4px}
+.roundScore{font-size:38px;line-height:1;font-weight:900;color:#000!important;-webkit-text-fill-color:#000;font-variant-numeric:tabular-nums;margin-top:7px}
 .negative{color:var(--danger)!important;-webkit-text-fill-color:var(--danger)!important}
-
-.panel{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:14px;
-  box-shadow:0 1px 3px rgba(15,23,42,.08);
-}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 1px 3px rgba(15,23,42,.08)}
 .activeHead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:10px}
 .small{font-size:12px;color:var(--muted);font-weight:700}
 .activeName{font-size:24px;font-weight:900}
-.liveBig{
-  font-size:54px;
-  line-height:.95;
-  font-weight:950;
-  color:#000!important;
-  -webkit-text-fill-color:#000;
-  font-variant-numeric:tabular-nums;
-}
+.liveBig{font-size:54px;line-height:.95;font-weight:950;color:#000!important;-webkit-text-fill-color:#000;font-variant-numeric:tabular-nums}
 .nums{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
 .btn{padding:4px 8px}
 .btn.on{background:var(--accent-soft);border-color:var(--accent);color:#14532d}
@@ -142,39 +76,33 @@ button{touch-action:manipulation}
 .winner{margin-top:10px;padding:12px;border-radius:12px;background:#fef3c7;color:#78350f;font-weight:900;text-align:center}
 .footer{display:flex;justify-content:space-between;gap:10px;margin-top:8px;color:var(--muted);font-size:11px}
 .hidden{display:none!important}
+.dialogBack{
+  position:fixed;inset:0;background:rgba(15,23,42,.38);display:flex;align-items:center;
+  justify-content:center;padding:20px;z-index:20
+}
+.dialog{width:min(92vw,440px);background:#fff;border-radius:18px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.22)}
+.dialog h2{margin:0 0 14px;font-size:21px}
+.field{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;margin:10px 0}
+.field select,.field input{min-height:46px;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:#fff}
+.dialogActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 
-/* Fold8の開いた4:3メイン画面を主対象 */
 @media (min-width:700px) and (max-aspect-ratio:1.45/1){
   .app{padding-left:18px;padding-right:18px}
-  .players{gap:12px}
-  .player{padding:14px}
-  .totalScore{font-size:58px}
-  .roundScore{font-size:44px}
-  .liveBig{font-size:64px}
-  .btn{min-height:54px;font-size:17px}
-  .modebtn{min-height:50px}
-  .panel{padding:16px}
+  .players{gap:12px}.player{padding:14px}
+  .players.p4 .totalScore,.players.p3 .totalScore,.players.p2 .totalScore{font-size:58px}
+  .players.p4 .roundScore,.players.p3 .roundScore,.players.p2 .roundScore{font-size:44px}
+  .players.p5 .totalScore,.players.p6 .totalScore{font-size:52px}
+  .players.p7 .totalScore,.players.p8 .totalScore{font-size:43px}
+  .players.p5 .roundScore,.players.p6 .roundScore{font-size:40px}
+  .players.p7 .roundScore,.players.p8 .roundScore{font-size:34px}
+  .liveBig{font-size:64px}.btn{min-height:54px;font-size:17px}.panel{padding:16px}
 }
-/* Foldを横向きにした場合 */
-@media (min-width:850px) and (min-aspect-ratio:1.2/1){
-  .players{gap:12px}
-  .totalScore{font-size:52px}
-  .roundScore{font-size:40px}
-  .btn{min-height:48px}
-}
-/* 閉じたスマホ画面でも破綻しない */
 @media (max-width:699px){
   .app{padding-left:10px;padding-right:10px}
-  .players{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-  .player{padding:9px}
-  .pname{font-size:15px}
-  .totalScore{font-size:38px}
-  .roundScore{font-size:31px}
-  .liveBig{font-size:46px}
-  .nums{gap:6px}
-  .mods{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-  .btn{min-height:46px;font-size:14px}
-  .title{font-size:18px}
+  .players,.players.p2,.players.p3,.players.p4,.players.p5,.players.p6,.players.p7,.players.p8{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .player{padding:9px}.pname{font-size:15px}.totalScore{font-size:38px}.roundScore{font-size:31px}
+  .liveBig{font-size:46px}.nums{gap:6px}.mods{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .btn{min-height:46px;font-size:14px}.title{font-size:18px}
 }
 </style>
 </head>
@@ -183,9 +111,12 @@ button{touch-action:manipulation}
   <div class="top">
     <div>
       <div class="title">Flip 7: With a Vengeance</div>
-      <div class="round" id="roundLabel">Round 1 / 目標 200</div>
+      <div class="round" id="roundLabel"></div>
     </div>
-    <button class="btn" id="newGameBtn" style="padding:0 16px">新規</button>
+    <div class="topActions">
+      <button class="btn" id="settingsBtn" style="padding:0 14px">設定</button>
+      <button class="btn" id="newGameBtn" style="padding:0 14px">新規</button>
+    </div>
   </div>
 
   <div class="modebar">
@@ -198,7 +129,7 @@ button{touch-action:manipulation}
 
   <section class="panel">
     <div class="activeHead">
-      <div><div class="small">入力中</div><div class="activeName" id="activeName">PLAYER 1</div></div>
+      <div><div class="small">入力中</div><div class="activeName" id="activeName"></div></div>
       <div style="text-align:right"><div class="small">今回</div><div class="liveBig" id="liveScore">0</div></div>
     </div>
 
@@ -228,7 +159,7 @@ button{touch-action:manipulation}
       <select id="attackTarget" class="attackselect hidden"></select>
     </div>
 
-    <div class="formula" id="formula">数字をタップしてください。</div>
+    <div class="formula" id="formula"></div>
 
     <div class="actions">
       <button class="btn" id="undoRoundBtn">1R戻す</button>
@@ -241,91 +172,93 @@ button{touch-action:manipulation}
   <div class="footer"><span>自動保存 / オフライン対応</span><span id="saveState">保存済み</span></div>
 </main>
 
+<div class="dialogBack hidden" id="settingsDialog">
+  <div class="dialog">
+    <h2>ゲーム設定</h2>
+    <div class="field">
+      <label for="playerCount">プレイヤー数</label>
+      <select id="playerCount">
+        <option value="2">2人</option><option value="3">3人</option><option value="4">4人</option>
+        <option value="5">5人</option><option value="6">6人</option><option value="7">7人</option><option value="8">8人</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="targetScore">目標点</label>
+      <input id="targetScore" type="number" min="1" step="1" value="200">
+    </div>
+    <div class="small">人数を減らすと、末尾のプレイヤーの得点・入力内容は削除されます。</div>
+    <div class="dialogActions">
+      <button class="btn" id="cancelSettings">キャンセル</button>
+      <button class="btn primary" id="saveSettings">保存</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (() => {
-  const STORAGE_KEY='flip7-v-score-v3';
-  const previousKeys=['flip7-v-score-v2','flip7-v-score-v1'];
+  const STORAGE_KEY='flip7-v-score-v4';
+  const previousKeys=['flip7-v-score-v3','flip7-v-score-v2','flip7-v-score-v1'];
 
-  function blankHand(){
-    return {nums:{},half:false,mods:[],bust:false,flip7:false,theZero:false,lucky13:false,unlucky:false,bonusChoice:'self',attackTarget:null};
-  }
-  function freshState(){
-    return {round:1,target:200,active:0,mode:'normal',
-      players:Array.from({length:4},(_,i)=>({name:`PLAYER ${i+1}`,total:0,hand:blankHand()})),
-      history:[]};
-  }
+  function blankHand(){return {nums:{},half:false,mods:[],bust:false,flip7:false,theZero:false,lucky13:false,unlucky:false,bonusChoice:'self',attackTarget:null}}
+  function newPlayer(i){return {name:`PLAYER ${i+1}`,total:0,hand:blankHand()}}
+  function freshState(){return {round:1,target:200,active:0,mode:'normal',playerCount:4,players:Array.from({length:4},(_,i)=>newPlayer(i)),history:[]}}
   function normalize(s){
     s.mode=s.mode==='kill'?'kill':'normal';
-    s.players=(s.players||freshState().players).slice(0,4);
-    while(s.players.length<4)s.players.push({name:`PLAYER ${s.players.length+1}`,total:0,hand:blankHand()});
-    s.players.forEach((p,i)=>{
-      p.name=p.name||`PLAYER ${i+1}`;
-      p.total=Number(p.total)||0;
-      p.hand={...blankHand(),...(p.hand||{})};
-      p.hand.mods=Array.isArray(p.hand.mods)?p.hand.mods:[];
-    });
+    s.playerCount=Math.max(2,Math.min(8,Number(s.playerCount)||((s.players||[]).length||4)));
+    s.players=Array.isArray(s.players)?s.players.slice(0,s.playerCount):[];
+    while(s.players.length<s.playerCount)s.players.push(newPlayer(s.players.length));
+    s.players.forEach((p,i)=>{p.name=p.name||`PLAYER ${i+1}`;p.total=Number(p.total)||0;p.hand={...blankHand(),...(p.hand||{})};p.hand.mods=Array.isArray(p.hand.mods)?p.hand.mods:[]});
     s.history=Array.isArray(s.history)?s.history:[];
-    s.active=Math.max(0,Math.min(3,Number(s.active)||0));
+    s.active=Math.max(0,Math.min(s.playerCount-1,Number(s.active)||0));
     s.round=Math.max(1,Number(s.round)||1);
     s.target=Math.max(1,Number(s.target)||200);
     return s;
   }
   function load(){
     try{
-      let raw=localStorage.getItem(STORAGE_KEY);
-      if(raw)return normalize(JSON.parse(raw));
-      for(const k of previousKeys){
-        raw=localStorage.getItem(k);
-        if(raw)return normalize(JSON.parse(raw));
-      }
+      let raw=localStorage.getItem(STORAGE_KEY);if(raw)return normalize(JSON.parse(raw));
+      for(const k of previousKeys){raw=localStorage.getItem(k);if(raw)return normalize(JSON.parse(raw))}
     }catch(e){}
     return freshState();
   }
 
   const state=load(),$=s=>document.querySelector(s);
   function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));$('#saveState').textContent='保存済み'}
-  function numberCount(h){return Object.values(h.nums).reduce((a,b)=>a+(Number(b)||0),0)}
-  function hasFlip7(h){return h.flip7||numberCount(h)>=7}
+  function count(h){return Object.values(h.nums).reduce((a,b)=>a+(Number(b)||0),0)}
+  function flip(h){return h.flip7||count(h)>=7}
 
-  function ownRoundScore(h){
-    const flip=hasFlip7(h);
-    if(h.theZero&&!flip)return 0;
+  function ownScore(h){
+    const f=flip(h);
+    if(h.theZero&&!f)return 0;
     let s;
-    if(h.bust){
-      if(state.mode==='normal')return 0;
-      s=0;
-    }else{
+    if(h.bust){if(state.mode==='normal')return 0;s=0}
+    else{
       s=Object.entries(h.nums).reduce((a,[n,c])=>a+Number(n)*Number(c),0);
       if(h.half)s=Math.floor(s/2);
     }
     for(const m of h.mods)s-=m;
     if(state.mode==='normal')s=Math.max(0,s);
-    if(flip&&(state.mode==='normal'||h.bonusChoice!=='attack'))s+=15;
+    if(f&&(state.mode==='normal'||h.bonusChoice!=='attack'))s+=15;
     return s;
   }
-  function incomingPenalty(i){
+  function incoming(i){
     if(state.mode!=='kill')return 0;
     let p=0;
     state.players.forEach((pl,j)=>{
       const h=pl.hand;
-      if(j!==i&&hasFlip7(h)&&h.bonusChoice==='attack'&&Number(h.attackTarget)===i)p-=15;
+      if(j!==i&&flip(h)&&h.bonusChoice==='attack'&&Number(h.attackTarget)===i)p-=15;
     });
     return p;
   }
-  function shownRoundScore(i){return ownRoundScore(state.players[i].hand)+incomingPenalty(i)}
-
+  function shown(i){return ownScore(state.players[i].hand)+incoming(i)}
   function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
   function breakdown(i){
-    const h=state.players[i].hand,flip=hasFlip7(h),incoming=incomingPenalty(i),parts=[];
-    if(h.theZero&&!flip)parts.push('The Zero → 0点');
+    const h=state.players[i].hand,f=flip(h),inc=incoming(i),parts=[];
+    if(h.theZero&&!f)parts.push('The Zero → 0点');
     else if(h.bust){
       if(state.mode==='normal')parts.push('BUST → 0点');
-      else{
-        parts.push('BUST → 基礎0点');
-        const minus=h.mods.reduce((a,b)=>a+b,0);
-        if(minus)parts.push(`修正 −${minus}`);
-      }
+      else{parts.push('BUST → 基礎0点');const minus=h.mods.reduce((a,b)=>a+b,0);if(minus)parts.push(`修正 −${minus}`)}
     }else{
       let s=Object.entries(h.nums).reduce((a,[n,c])=>a+Number(n)*Number(c),0);
       parts.push(`数字合計 ${s}`);
@@ -333,38 +266,33 @@ button{touch-action:manipulation}
       const minus=h.mods.reduce((a,b)=>a+b,0);
       if(minus){s-=minus;if(state.mode==='normal')s=Math.max(0,s);parts.push(`−${minus} → ${s}`)}
     }
-    if(flip){
+    if(f){
       if(state.mode==='kill'&&h.bonusChoice==='attack'){
         const t=state.players[Number(h.attackTarget)];
         parts.push(t?`${t.name} に −15`:'相手に −15');
       }else parts.push('Flip 7 +15');
     }
-    if(incoming)parts.push(`他プレイヤーから ${incoming}`);
-    parts.push(`今回 ${shownRoundScore(i)}点`);
+    if(inc)parts.push(`他プレイヤーから ${inc}`);
+    parts.push(`今回 ${shown(i)}点`);
     return parts.join('　');
   }
 
   function renderPlayers(){
-    const wrap=$('#players');wrap.innerHTML='';
+    const wrap=$('#players');wrap.className=`players p${state.playerCount}`;wrap.innerHTML='';
     state.players.forEach((p,i)=>{
-      const rs=shownRoundScore(i),card=document.createElement('button');
+      const rs=shown(i),card=document.createElement('button');
       card.type='button';card.className='player'+(i===state.active?' active':'');
-      card.innerHTML=`
-        <input class="pname" data-name="${i}" value="${esc(p.name)}">
-        <div class="scoreGrid">
-          <div class="scoreBox"><div class="scoreLabel">累計</div><div class="totalScore ${p.total<0?'negative':''}">${p.total}</div></div>
-          <div class="scoreBox"><div class="scoreLabel">今回</div><div class="roundScore ${rs<0?'negative':''}">${rs}</div></div>
-        </div>`;
+      card.innerHTML=`<input class="pname" data-name="${i}" value="${esc(p.name)}">
+      <div class="scoreGrid">
+        <div class="scoreBox"><div class="scoreLabel">累計</div><div class="totalScore ${p.total<0?'negative':''}">${p.total}</div></div>
+        <div class="scoreBox"><div class="scoreLabel">今回</div><div class="roundScore ${rs<0?'negative':''}">${rs}</div></div>
+      </div>`;
       card.addEventListener('click',e=>{if(e.target.matches('input'))return;state.active=i;save();render()});
       wrap.appendChild(card);
     });
     wrap.querySelectorAll('.pname').forEach(inp=>{
       inp.addEventListener('click',e=>e.stopPropagation());
-      inp.addEventListener('change',e=>{
-        const i=Number(e.target.dataset.name);
-        state.players[i].name=e.target.value.trim()||`PLAYER ${i+1}`;
-        save();render();
-      });
+      inp.addEventListener('change',e=>{const i=Number(e.target.dataset.name);state.players[i].name=e.target.value.trim()||`PLAYER ${i+1}`;save();render()});
     });
   }
 
@@ -385,37 +313,36 @@ button{touch-action:manipulation}
 
   function renderMods(){
     const h=state.players[state.active].hand;
-    document.querySelectorAll('[data-mod]').forEach(b=>{
-      const v=b.dataset.mod,on=v==='half'?h.half:h.mods.includes(Number(v));
-      b.classList.toggle('on',on);
-    });
+    document.querySelectorAll('[data-mod]').forEach(b=>{const v=b.dataset.mod,on=v==='half'?h.half:h.mods.includes(Number(v));b.classList.toggle('on',on)});
     $('#bustBtn').classList.toggle('on',h.bust);
-    $('#flip7Btn').classList.toggle('on',hasFlip7(h));
+    $('#flip7Btn').classList.toggle('on',flip(h));
     $('#zeroBtn').classList.toggle('on',h.theZero);
     $('#lucky13Btn').classList.toggle('on',h.lucky13);
     $('#unluckyBtn').classList.toggle('on',h.unlucky);
   }
 
   function renderAttack(){
-    const h=state.players[state.active].hand,show=state.mode==='kill'&&hasFlip7(h);
+    const h=state.players[state.active].hand,show=state.mode==='kill'&&flip(h);
     $('#attackBox').classList.toggle('hidden',!show);
     if(!show)return;
     $('#selfBonusBtn').classList.toggle('on',h.bonusChoice!=='attack');
     $('#attackBonusBtn').classList.toggle('on',h.bonusChoice==='attack');
     const sel=$('#attackTarget');
     sel.innerHTML=state.players.map((p,i)=>i===state.active?'':`<option value="${i}">${esc(p.name)} −15</option>`).join('');
-    if(h.attackTarget===null||Number(h.attackTarget)===state.active)h.attackTarget=(state.active+1)%4;
+    if(h.attackTarget===null||Number(h.attackTarget)===state.active||!state.players[Number(h.attackTarget)]){
+      h.attackTarget=(state.active+1)%state.playerCount;
+    }
     sel.value=String(h.attackTarget);
     sel.classList.toggle('hidden',h.bonusChoice!=='attack');
   }
 
   function render(){
-    const p=state.players[state.active],rs=shownRoundScore(state.active);
+    const p=state.players[state.active],rs=shown(state.active);
     $('#activeName').textContent=p.name;
     $('#liveScore').textContent=rs;
     $('#liveScore').classList.toggle('negative',rs<0);
     $('#formula').textContent=breakdown(state.active);
-    $('#roundLabel').textContent=`Round ${state.round} / 目標 ${state.target}`;
+    $('#roundLabel').textContent=`Round ${state.round} / ${state.playerCount}人 / 目標 ${state.target}`;
     $('#normalModeBtn').classList.toggle('on',state.mode==='normal');
     $('#killModeBtn').classList.toggle('on',state.mode==='kill');
     renderPlayers();renderNumbers();renderMods();renderAttack();
@@ -437,35 +364,75 @@ button{touch-action:manipulation}
   $('#normalModeBtn').addEventListener('click',()=>{state.mode='normal';save();render()});
   $('#killModeBtn').addEventListener('click',()=>{state.mode='kill';save();render()});
   $('#bustBtn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.bust=!h.bust;save();render()});
-  $('#flip7Btn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.flip7=!h.flip7;if(!hasFlip7(h)){h.bonusChoice='self';h.attackTarget=null}save();render()});
+  $('#flip7Btn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.flip7=!h.flip7;if(!flip(h)){h.bonusChoice='self';h.attackTarget=null}save();render()});
   $('#zeroBtn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.theZero=!h.theZero;h.nums[0]=h.theZero?1:0;save();render()});
   $('#lucky13Btn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.lucky13=!h.lucky13;if(!h.lucky13&&(h.nums[13]||0)>1)h.nums[13]=1;save();render()});
   $('#unluckyBtn').addEventListener('click',()=>{const h=blankHand();h.unlucky=true;h.nums[7]=1;state.players[state.active].hand=h;save();render()});
   $('#clearBtn').addEventListener('click',()=>{state.players[state.active].hand=blankHand();save();render()});
   $('#selfBonusBtn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.bonusChoice='self';save();render()});
-  $('#attackBonusBtn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.bonusChoice='attack';if(h.attackTarget===null||Number(h.attackTarget)===state.active)h.attackTarget=(state.active+1)%4;save();render()});
+  $('#attackBonusBtn').addEventListener('click',()=>{const h=state.players[state.active].hand;h.bonusChoice='attack';if(h.attackTarget===null||Number(h.attackTarget)===state.active)h.attackTarget=(state.active+1)%state.playerCount;save();render()});
   $('#attackTarget').addEventListener('change',e=>{state.players[state.active].hand.attackTarget=Number(e.target.value);save();render()});
-  $('#nextPlayerBtn').addEventListener('click',()=>{state.active=(state.active+1)%4;save();render()});
+  $('#nextPlayerBtn').addEventListener('click',()=>{state.active=(state.active+1)%state.playerCount;save();render()});
+
   $('#commitBtn').addEventListener('click',()=>{
-    const scores=state.players.map((_,i)=>shownRoundScore(i));
-    state.history.push({scores,mode:state.mode});
+    const scores=state.players.map((_,i)=>shown(i));
+    state.history.push({scores,mode:state.mode,playerCount:state.playerCount});
     scores.forEach((s,i)=>state.players[i].total+=s);
     state.players.forEach(p=>p.hand=blankHand());
     state.active=0;state.round+=1;save();render();
   });
+
   $('#undoRoundBtn').addEventListener('click',()=>{
     const last=state.history.pop();if(!last)return;
-    last.scores.forEach((s,i)=>state.players[i].total-=s);
+    const n=Math.min(last.scores.length,state.players.length);
+    for(let i=0;i<n;i++)state.players[i].total-=last.scores[i];
     state.round=Math.max(1,state.round-1);
     state.players.forEach(p=>p.hand=blankHand());
     state.active=0;save();render();
   });
+
   $('#newGameBtn').addEventListener('click',()=>{
     if(!confirm('現在の得点を消して新しいゲームを開始しますか？'))return;
     state.round=1;state.active=0;state.history=[];
     state.players.forEach(p=>{p.total=0;p.hand=blankHand()});
     save();render();
   });
+
+  $('#settingsBtn').addEventListener('click',()=>{
+    $('#playerCount').value=String(state.playerCount);
+    $('#targetScore').value=String(state.target);
+    $('#settingsDialog').classList.remove('hidden');
+  });
+  $('#cancelSettings').addEventListener('click',()=>$('#settingsDialog').classList.add('hidden'));
+  $('#saveSettings').addEventListener('click',()=>{
+    const newCount=Math.max(2,Math.min(8,Number($('#playerCount').value)||4));
+    const newTarget=Math.max(1,Number($('#targetScore').value)||200);
+
+    if(newCount<state.playerCount){
+      const removed=state.players.slice(newCount);
+      const hasData=removed.some(p=>p.total!==0||count(p.hand)>0||p.hand.bust||p.hand.mods.length);
+      if(hasData&&!confirm(`${state.playerCount}人から${newCount}人に減らすと、削除されるプレイヤーの得点と入力内容も消えます。続けますか？`))return;
+    }
+
+    if(newCount>state.playerCount){
+      while(state.players.length<newCount)state.players.push(newPlayer(state.players.length));
+    }else if(newCount<state.playerCount){
+      state.players=state.players.slice(0,newCount);
+      state.history=[]; // 人数変更後の誤ったUndoを防ぐ
+    }
+    state.playerCount=newCount;
+    state.target=newTarget;
+    state.active=Math.min(state.active,newCount-1);
+    state.players.forEach((p,i)=>{
+      if(p.hand.attackTarget!==null && !state.players[Number(p.hand.attackTarget)]){
+        p.hand.attackTarget=(i+1)%newCount;
+      }
+    });
+    save();
+    $('#settingsDialog').classList.add('hidden');
+    render();
+  });
+
   if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
   render();
 })();
