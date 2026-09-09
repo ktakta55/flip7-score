@@ -26,6 +26,10 @@ button{touch-action:manipulation}
 .title{font-size:22px;font-weight:900}
 .round{font-size:14px;color:var(--muted);margin-top:2px}
 .topActions{display:flex;gap:8px}
+.starterBanner{margin:0 0 10px;padding:10px 12px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;font-weight:900;color:#14532d;text-align:center}
+.orderRow{display:flex;gap:6px;justify-content:center;margin-top:7px}
+.orderBtn{min-height:34px;min-width:38px;border:1px solid var(--line);background:#fff;border-radius:9px;font-weight:900}
+.orderBtn:disabled{opacity:.35}
 .modebar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .modebtn,.btn{
   border:1px solid var(--line);background:var(--panel);color:var(--text);
@@ -125,6 +129,8 @@ button{touch-action:manipulation}
     <button class="modebtn kill" id="killModeBtn">殺伐モード</button>
   </div>
 
+  <div class="starterBanner" id="starterBanner"></div>
+
   <section class="players" id="players"></section>
 
   <section class="panel">
@@ -201,7 +207,7 @@ button{touch-action:manipulation}
 
   function blankHand(){return {nums:{},half:false,mods:[],bust:false,flip7:false,theZero:false,lucky13:false,unlucky:false,bonusChoice:'self',attackTarget:null}}
   function newPlayer(i){return {name:`PLAYER ${i+1}`,total:0,hand:blankHand()}}
-  function freshState(){return {round:1,target:200,active:0,mode:'normal',playerCount:4,players:Array.from({length:4},(_,i)=>newPlayer(i)),history:[]}}
+  function freshState(){return {round:1,target:200,active:0,mode:'normal',playerCount:4,starter:0,players:Array.from({length:4},(_,i)=>newPlayer(i)),history:[]}}
   function normalize(s){
     s.mode=s.mode==='kill'?'kill':'normal';
     s.playerCount=Math.max(2,Math.min(8,Number(s.playerCount)||((s.players||[]).length||4)));
@@ -210,6 +216,7 @@ button{touch-action:manipulation}
     s.players.forEach((p,i)=>{p.name=p.name||`PLAYER ${i+1}`;p.total=Number(p.total)||0;p.hand={...blankHand(),...(p.hand||{})};p.hand.mods=Array.isArray(p.hand.mods)?p.hand.mods:[]});
     s.history=Array.isArray(s.history)?s.history:[];
     s.active=Math.max(0,Math.min(s.playerCount-1,Number(s.active)||0));
+    s.starter=Math.max(0,Math.min(s.playerCount-1,Number(s.starter)||0));
     s.round=Math.max(1,Number(s.round)||1);
     s.target=Math.max(1,Number(s.target)||200);
     return s;
@@ -277,6 +284,26 @@ button{touch-action:manipulation}
     return parts.join('　');
   }
 
+  function movePlayer(from,to){
+    if(from===to||from<0||to<0||from>=state.playerCount||to>=state.playerCount)return;
+    const [moved]=state.players.splice(from,1);
+    state.players.splice(to,0,moved);
+
+    function remapIndex(idx){
+      if(idx===from)return to;
+      if(from<to && idx>from && idx<=to)return idx-1;
+      if(to<from && idx>=to && idx<from)return idx+1;
+      return idx;
+    }
+    state.active=remapIndex(state.active);
+    state.starter=remapIndex(state.starter);
+    state.players.forEach(p=>{
+      const t=p.hand.attackTarget;
+      if(t!==null)p.hand.attackTarget=remapIndex(Number(t));
+    });
+    save();render();
+  }
+
   function renderPlayers(){
     const wrap=$('#players');wrap.className=`players p${state.playerCount}`;wrap.innerHTML='';
     state.players.forEach((p,i)=>{
@@ -286,14 +313,28 @@ button{touch-action:manipulation}
       <div class="scoreGrid">
         <div class="scoreBox"><div class="scoreLabel">累計</div><div class="totalScore ${p.total<0?'negative':''}">${p.total}</div></div>
         <div class="scoreBox"><div class="scoreLabel">今回</div><div class="roundScore ${rs<0?'negative':''}">${rs}</div></div>
+      </div>
+      <div class="orderRow">
+        <button type="button" class="orderBtn" data-move-left="${i}" ${i===0?'disabled':''}>←</button>
+        <button type="button" class="orderBtn" data-move-right="${i}" ${i===state.playerCount-1?'disabled':''}>→</button>
       </div>`;
-      card.addEventListener('click',e=>{if(e.target.matches('input'))return;state.active=i;save();render()});
+      card.addEventListener('click',e=>{if(e.target.matches('input,button'))return;state.active=i;save();render()});
       wrap.appendChild(card);
     });
     wrap.querySelectorAll('.pname').forEach(inp=>{
       inp.addEventListener('click',e=>e.stopPropagation());
       inp.addEventListener('change',e=>{const i=Number(e.target.dataset.name);state.players[i].name=e.target.value.trim()||`PLAYER ${i+1}`;save();render()});
     });
+    wrap.querySelectorAll('[data-move-left]').forEach(b=>b.addEventListener('click',e=>{
+      e.stopPropagation();
+      const i=Number(b.dataset.moveLeft); if(i<=0)return;
+      movePlayer(i,i-1);
+    }));
+    wrap.querySelectorAll('[data-move-right]').forEach(b=>b.addEventListener('click',e=>{
+      e.stopPropagation();
+      const i=Number(b.dataset.moveRight); if(i>=state.playerCount-1)return;
+      movePlayer(i,i+1);
+    }));
   }
 
   function renderNumbers(){
@@ -343,6 +384,7 @@ button{touch-action:manipulation}
     $('#liveScore').classList.toggle('negative',rs<0);
     $('#formula').textContent=breakdown(state.active);
     $('#roundLabel').textContent=`Round ${state.round} / ${state.playerCount}人 / 目標 ${state.target}`;
+    $('#starterBanner').textContent=`このラウンドのスタート: ${state.players[state.starter]?.name || ''}`;
     $('#normalModeBtn').classList.toggle('on',state.mode==='normal');
     $('#killModeBtn').classList.toggle('on',state.mode==='kill');
     renderPlayers();renderNumbers();renderMods();renderAttack();
@@ -379,7 +421,9 @@ button{touch-action:manipulation}
     state.history.push({scores,mode:state.mode,playerCount:state.playerCount});
     scores.forEach((s,i)=>state.players[i].total+=s);
     state.players.forEach(p=>p.hand=blankHand());
-    state.active=0;state.round+=1;save();render();
+    state.starter=(state.starter+1)%state.playerCount;
+    state.active=state.starter;
+    state.round+=1;save();render();
   });
 
   $('#undoRoundBtn').addEventListener('click',()=>{
@@ -387,13 +431,14 @@ button{touch-action:manipulation}
     const n=Math.min(last.scores.length,state.players.length);
     for(let i=0;i<n;i++)state.players[i].total-=last.scores[i];
     state.round=Math.max(1,state.round-1);
+    state.starter=(state.starter-1+state.playerCount)%state.playerCount;
     state.players.forEach(p=>p.hand=blankHand());
-    state.active=0;save();render();
+    state.active=state.starter;save();render();
   });
 
   $('#newGameBtn').addEventListener('click',()=>{
     if(!confirm('現在の得点を消して新しいゲームを開始しますか？'))return;
-    state.round=1;state.active=0;state.history=[];
+    state.round=1;state.starter=0;state.active=0;state.history=[];
     state.players.forEach(p=>{p.total=0;p.hand=blankHand()});
     save();render();
   });
@@ -423,6 +468,7 @@ button{touch-action:manipulation}
     state.playerCount=newCount;
     state.target=newTarget;
     state.active=Math.min(state.active,newCount-1);
+    state.starter=Math.min(state.starter,newCount-1);
     state.players.forEach((p,i)=>{
       if(p.hand.attackTarget!==null && !state.players[Number(p.hand.attackTarget)]){
         p.hand.attackTarget=(i+1)%newCount;
