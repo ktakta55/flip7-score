@@ -314,10 +314,10 @@ button{touch-action:manipulation}
         <div class="scoreBox"><div class="scoreLabel">累計</div><div class="totalScore ${p.total<0?'negative':''}">${p.total}</div></div>
         <div class="scoreBox"><div class="scoreLabel">今回</div><div class="roundScore ${rs<0?'negative':''}">${rs}</div></div>
       </div>
-      <div class="orderRow">
+      ${state.round===1 && state.history.length===0 ? `<div class="orderRow">
         <button type="button" class="orderBtn" data-move-left="${i}" ${i===0?'disabled':''}>←</button>
         <button type="button" class="orderBtn" data-move-right="${i}" ${i===state.playerCount-1?'disabled':''}>→</button>
-      </div>`;
+      </div>` : ''}`;
       card.addEventListener('click',e=>{if(e.target.matches('input,button'))return;state.active=i;save();render()});
       wrap.appendChild(card);
     });
