@@ -1,6 +1,7 @@
 # Flip 7 Score v8
 
-Galaxy Z Fold8 展開画面向け。
+- Galaxy Z Fold8 展開画面向け
+- https://ktakta55.github.io/flip7-score/
 
 ## v4変更点
 - プレイヤー数を2〜8人で変更可能
